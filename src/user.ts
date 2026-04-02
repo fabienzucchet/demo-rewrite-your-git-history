@@ -19,7 +19,7 @@ export class UserService {
     this.users.set(id, user);
     this.notificationService?.send({
       to: email,
-      subject: "Welcom to the platform!",
+      subject: "Welcome to the platform!",
       body: `Hi ${name}, your account has been created.`,
     });
     return user;
