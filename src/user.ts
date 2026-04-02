@@ -1,3 +1,5 @@
+import { NotificationService } from "./notification";
+
 export interface User {
   id: string;
   name: string;
@@ -8,10 +10,17 @@ export interface User {
 export class UserService {
   private users: Map<string, User> = new Map();
 
+  constructor(private notificationService?: NotificationService) {}
+
   create(name: string, email: string): User {
     const id = crypto.randomUUID();
     const user: User = { id, name, email, active: true };
     this.users.set(id, user);
+    this.notificationService?.send({
+      to: email,
+      subject: "Welcome to the platform!",
+      body: `Hi ${name}, your account has been created.`,
+    });
     return user;
   }
 
