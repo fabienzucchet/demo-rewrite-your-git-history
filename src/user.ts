@@ -13,7 +13,6 @@ export class UserService {
   constructor(private notificationService?: NotificationService) {}
 
   create(name: string, email: string): User {
-    console.log("DEBUG: creating user", name, email);
     const id = crypto.randomUUID();
     const user: User = { id, name, email, active: true };
     this.users.set(id, user);
