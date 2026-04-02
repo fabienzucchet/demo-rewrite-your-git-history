@@ -1,4 +1,5 @@
 import { NotificationService } from "./notification";
+import { UserService } from "./user";
 
 describe("NotificationService", () => {
   it("sends a notification", () => {
@@ -19,5 +20,25 @@ describe("NotificationService", () => {
     service.send({ to: "c@d.com", subject: "s2", body: "b2" });
 
     expect(service.getSent()).toHaveLength(2);
+  });
+});
+
+describe("UserService with notifications", () => {
+  it("sends welcome email on user creation", () => {
+    const notifications = new NotificationService();
+    const users = new UserService(notifications);
+
+    users.create("Alice", "alice@example.com");
+
+    const sent = notifications.getSent();
+    expect(sent).toHaveLength(1);
+    expect(sent[0].to).toBe("alice@example.com");
+    expect(sent[0].subject).toBe("Welcome to the platform!");
+  });
+
+  it("works without notification service", () => {
+    const users = new UserService();
+    const user = users.create("Charlie", "charlie@example.com");
+    expect(user.name).toBe("Charlie");
   });
 });
