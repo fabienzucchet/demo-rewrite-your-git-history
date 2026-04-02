@@ -26,6 +26,11 @@ describe("UserService", () => {
     expect(service.getById(user.id)?.active).toBe(false);
   });
 
+  it("throws when deactivating unknown user", () => {
+    const service = new UserService();
+    expect(() => service.deactivate("unknown-id")).toThrow("User unknown-id not found");
+  });
+
   it("lists only active users", () => {
     const service = new UserService();
     service.create("Active", "active@example.com");
