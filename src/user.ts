@@ -32,6 +32,11 @@ export class UserService {
     const user = this.users.get(id);
     if (!user) throw new Error(`User ${id} not found`);
     user.active = false;
+    this.notificationService?.send({
+      to: user.email,
+      subject: "Account deactivated",
+      body: `Hi ${user.name}, your account has been deactivated.`,
+    });
   }
 
   listActive(): User[] {
