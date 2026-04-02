@@ -36,6 +36,18 @@ describe("UserService with notifications", () => {
     expect(sent[0].subject).toBe("Welcome to the platform!");
   });
 
+  it("sends deactivation email", () => {
+    const notifications = new NotificationService();
+    const users = new UserService(notifications);
+
+    const user = users.create("Bob", "bob@example.com");
+    users.deactivate(user.id);
+
+    const sent = notifications.getSent();
+    expect(sent).toHaveLength(2);
+    expect(sent[1].subject).toBe("Account deactivated");
+  });
+
   it("works without notification service", () => {
     const users = new UserService();
     const user = users.create("Charlie", "charlie@example.com");
